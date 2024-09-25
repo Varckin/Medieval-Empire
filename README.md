@@ -1,0 +1,2 @@
+### Medieval Empire
+Text global strategy. In development. If you want to help me with the development or suggest an idea for the game, write to me in private messages or in the comments to the project.
