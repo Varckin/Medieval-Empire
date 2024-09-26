@@ -64,4 +64,4 @@ class Wine(Resource):
 
 class Amber(Resource):
     def __init__(self, name: str, category: str, rarity: str, amount: int = 0, price: float = 1):
-        super().__init__(name="Amber", category="Valuable", rarity="Valuble", amount=amount, price=1.0)
+        super().__init__(name="Amber", category="Valuable", rarity="Valuable", amount=amount, price=1.0)
