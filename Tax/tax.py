@@ -4,24 +4,29 @@ class TaxSystem:
     def __init__(self):
         """
         Tax levels:
-        'low' — low tax, minimal effects on population
-        'medium' — medium tax, small effect on population
-        'high' — high tax, significant effect
-        'extreme' — excessive tax, catastrophic effect
+
+        'low' — low tax, improves population
+        'medium' — medium tax, no change
+        'high' — high tax, small impact
+        'extreme' — excessive tax, big impact
         """
-        self.tax_levels = {
-            'low': 0.05,
-            'medium': 0.15,
-            'high': 0.25,
-            'extreme': 0.35
+        self.tax_levels: dict = {
+            'low': (0.1, 0.02),
+            'medium': (0.2, 0.05),
+            'high': (0.3, 0.1),
+            'extreme': (0.4, 0.15)
         }
 
     def collect_taxes(self, population: Population, tax_level: str, tax_type: str = 'base'):
+        worker_tax, elderly_tax = self.tax_levels[tax_level]
 
-        tax_rate = self.tax_levels[tax_level]
         population.adjust_rates_by_tax(tax_level, tax_type) # The impact of tax on birth and death rates
         
-        tax_base = population.total_population
-        total_taxes = int(tax_base * tax_rate)
+        worker_tax: float = population.working_class * worker_tax
+        elderly_tax: float = population.elderly * elderly_tax
+        unemployed_tax: int = 0
+        children_tax: int = 0
 
-        return total_taxes
+        total_tax: float = worker_tax + elderly_tax + unemployed_tax + children_tax
+
+        return int(total_tax)

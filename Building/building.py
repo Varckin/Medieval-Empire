@@ -2,7 +2,7 @@ from Resource.resource import Resource
 
 
 class Building:
-    def __init__(self, name: str, resource: Resource=None, production_rate: int=0):
+    def __init__(self, name: str, resource: Resource=None, production_rate: int=0) -> None:
         """
         param name: Name of the building 
         param resource: Type of resource produced

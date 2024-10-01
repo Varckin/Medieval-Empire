@@ -15,14 +15,12 @@ class Resource:
         self.amount: int = amount
         self.price: float = price
 
-    def produce(self, amount) -> None:
+    def produce(self, amount: int) -> None:
         self.amount += amount
 
-    def consume(self, amount) -> None:
+    def consume(self, amount: int) -> None:
         if self.amount >= amount:
             self.amount -= amount
-        else:
-            pass
 
     def get_total_amount_resource(self) -> float:
         return self.amount * self.price
