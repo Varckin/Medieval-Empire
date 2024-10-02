@@ -1,21 +1,29 @@
 from Resource.resource import Gold, Wheat, Wood, Iron
+from Religion.religion import Religion
+from Population.population import Population
+from Army.army import Army
+from Government.government import Government
+from Culture.culture import Culture
 
 
 class Country:
-    def __init__(self, name, political_system, religion, population, army_size):
+    def __init__(self, name: str, government: Government,
+                 religion: Religion, culture: Culture, population: Population,
+                 army: Army) -> None:
         """
         param name: Name Country
-        param political_system: Polotical system Country
+        param political_system: Political system Country
         param religion: Religion Country
         param population: Population Country
-        param army_size: Army size Country
+        param army: Army Country
         """
-        self.name = name
-        self.political_system = political_system
-        self.religion = religion
-        self.population = population
-        self.army_size = army_size
-        self.resources = {
+        self.name: str = name
+        self.government: Government = government
+        self.religion: Religion = religion
+        self.culture: Culture = culture
+        self.population: Population = population
+        self.army: Army = army
+        self.resources: dict = {
             "gold": Gold(),
             "wheat": Wheat(),
             "wood": Wood(),
@@ -33,9 +41,9 @@ class Country:
     def put_status_country(self):
         return (
             self.name,
-            self.political_system,
+            self.government,
             self.religion,
             self.population,
-            self.army_size,
+            self.army.size,
             self.resources
         )

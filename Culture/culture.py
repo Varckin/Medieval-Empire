@@ -1,21 +1,21 @@
 
 
 class Culture:
-    def __init__(self, name: str, trade_bonus: float = 1.0, diplomacy_bonus: float = 1.0):
-        self.name = name
-        self.trade_bonus = trade_bonus
-        self.diplomacy_bonus = diplomacy_bonus
-
-    def apply_modifiers(self, country):
-        country.trade_income *= self.trade_bonus
-        country.diplomacy *= self.diplomacy_bonus
+    def __init__(self, name: str, description: str):
+        self.name: str = name
+        self.description: str = description
 
 
 class RussianCulture(Culture):
     def __init__(self):
-        super().__init__(name="Russian", trade_bonus=0.9, diplomacy_bonus=1.1)
+        super().__init__(name="Russian", description="A rich history closely linked to Orthodoxy and autocracy. A strong communal tradition, an emphasis on collectivism, folk tales and magnificent artistic achievements.")
 
 
 class EnglishCulture(Culture):
     def __init__(self):
-        super().__init__(name="English", trade_bonus=1.2, diplomacy_bonus=1.05)
+        super().__init__(name="English", description="Culture of monarchy and parliamentarism. Tradition, politeness and respect for the law are important. Developed literary and theatrical scene, influence of the industrial revolution and colonial era.")
+
+
+class ScandinavianCulture(Culture):
+    def __init__(self):
+        super().__init__(name="Scandinavian", description="Roots in ancient Vikings, strong connection with nature and the sea. Support for social values, equality and democracy. Simplicity, minimalism, folklore and love for myths and legends.")

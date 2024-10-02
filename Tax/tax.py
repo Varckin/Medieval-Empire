@@ -1,7 +1,7 @@
 from Population.population import Population
 
 class TaxSystem:
-    def __init__(self):
+    def __init__(self) -> None:
         """
         Tax levels:
 
@@ -17,7 +17,7 @@ class TaxSystem:
             'extreme': (0.4, 0.15)
         }
 
-    def collect_taxes(self, population: Population, tax_level: str, tax_type: str = 'base'):
+    def collect_taxes(self, population: Population, tax_level: str, tax_type: str = 'base') -> int:
         worker_tax, elderly_tax = self.tax_levels[tax_level]
 
         population.adjust_rates_by_tax(tax_level, tax_type) # The impact of tax on birth and death rates
