@@ -9,7 +9,7 @@ from Culture.culture import Culture
 class Country:
     def __init__(self, name: str, government: Government,
                  religion: Religion, culture: Culture, population: Population,
-                 army: Army) -> None:
+                 army: Army, gold: Gold) -> None:
         """
         param name: Name Country
         param political_system: Political system Country
@@ -23,8 +23,8 @@ class Country:
         self.culture: Culture = culture
         self.population: Population = population
         self.army: Army = army
+        self.gold: Gold = gold
         self.resources: dict = {
-            "gold": Gold(),
             "wheat": Wheat(),
             "wood": Wood(),
             "iron": Iron()
