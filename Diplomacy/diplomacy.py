@@ -1,24 +1,36 @@
 from Country.country import Country
 from Resource.resource import Resource
+from enum import Enum
+
+class RelationState(Enum):
+    WAR = "war"
+    PEACE = "peace"
+    UNION = "union"
+    ALLIANCE = "alliance"
+    TRADE_AGREEMENT = "trade_agreement"
+    ROYAL_MARRIAGE = "royal_marriage"
 
 
 class DiplomaticRelations:
     def __init__(self) -> None:
-        # Store relations with countries in the format {country: relation level}
+        # Store relations with countries in the format {country: {relation: level, relationstate: state}}
         self.relations: dict = {}
 
+    def set_relationstate(self, country: Country, value: RelationState) -> None:
+        self.relations.get(country.name)["relationstate"] = set(value)
+    
     def set_relation(self, country: Country, value: int) -> None:
-        self.relations[country.name] = value
+        self.relations.get(country.name)["relation"] = value
 
     def change_relation(self, country: Country, value: int) -> None:
         if country in self.relations:
-            self.relations[country.name] += value
-            self.relations[country.name] = max(-200, min(200, self.relations[country.name])) # Limit -200 to +200
+            self.relations.get(country.name)["relation"] = value
+            self.relations.get(country.name)["relation"] = max(-200, min(200, self.relations.get(country.name)["relation"])) # Limit -200 to +200
         else:
-            self.relations[country] = value
+            self.relations.get(country.name)["relation"] = value
 
     def get_relation(self, country: Country) -> int:
-        return self.relations.get(country.name)
+        return self.relations.get(country.name)["relation"]
 
 
 class Diplomacy:
@@ -71,16 +83,19 @@ class Diplomacy:
     
     def declare_war(self, target_country: Country) -> None:
         self.diplomatic_relations.set_relation(target_country, -200)
+        self.diplomatic_relations.set_relationstate(target_country, RelationState.WAR)
 
     def form_union(self, target_country: Country) -> None:
         if self.diplomatic_relations.get_relation(target_country) >= 80:
-            pass
+            self.diplomatic_relations.set_relationstate(target_country, RelationState.UNION)
+            self.diplomatic_relations.change_relation(target_country, 50)
         else:
             # The level of relations is low
             pass
 
     def negotiate_peace(self, target_country: Country) -> None:
         if self.diplomatic_relations.get_relation(target_country) <= -190:
+            self.diplomatic_relations.set_relationstate(target_country, RelationState.PEACE)
             self.diplomatic_relations.set_relation(target_country, 0)
         else:
             # The war will continue
@@ -100,6 +115,7 @@ class Diplomacy:
         if self.country.government == "monarchy" and target_country.government == "monarchy":
             if self.diplomatic_relations.get_relation(target_country) >= 50:
                 self.diplomatic_relations.change_relation(target_country, 30)
+                self.diplomatic_relations.set_relationstate(target_country, RelationState.ROYAL_MARRIAGE)
             else:
                 # Low relationship with the country.
                 pass
@@ -110,6 +126,7 @@ class Diplomacy:
     def establish_trade_agreement(self, target_country: Country) -> None:
         if self.diplomatic_relations.get_relation(target_country) >= 30:
             self.diplomatic_relations.change_relation(target_country, 20)
+            self.diplomatic_relations.set_relationstate(target_country, RelationState.TRADE_AGREEMENT)
         else:
             # Low relationship with the country.
             pass
