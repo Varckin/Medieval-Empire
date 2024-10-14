@@ -1,6 +1,11 @@
-from Country.country import Country
-from Resource.resource import Resource
+from typing import TYPE_CHECKING
 from enum import Enum
+
+
+if TYPE_CHECKING:
+    from Country.country import Country
+    from Resource.resource import Resource
+
 
 class RelationState(Enum):
     WAR = "war"

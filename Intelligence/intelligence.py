@@ -1,5 +1,10 @@
 from random import randint
-from Country.country import Country
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from Country.country import Country
+
 
 class SpyMission:
     def __init__(self, target_country: Country) -> None:

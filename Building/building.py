@@ -1,4 +1,8 @@
-from Resource.resource import Resource
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from Resource.resource import Resource
 
 
 class Building:

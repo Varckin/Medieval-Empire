@@ -1,8 +1,16 @@
+from enum import Enum
+
+
+class GovernmentType(Enum):
+    MONARCHY = "Monarchy"
+    REPUBLIC = "Republic"
+    THEOCRACY = "Theocracy"
 
 
 class Government:
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, type: GovernmentType) -> None:
         self.name: str = name
+        self.type: GovernmentType = type
         self.royal_marriage: bool = False
 
     def get_description(self) -> str:
@@ -11,7 +19,7 @@ class Government:
 
 class Monarchy(Government):
     def __init__(self, name: str) -> None:
-        super().__init__(name=name)
+        super().__init__(name=name, type=GovernmentType.MONARCHY)
         self.royal_marriage: bool = True
 
     def get_description(self) -> str:
@@ -20,7 +28,7 @@ class Monarchy(Government):
 
 class Republic(Government):
     def __init__(self, name: str) -> None:
-        super().__init__(name=name)
+        super().__init__(name=name, type=GovernmentType.REPUBLIC)
 
     def get_description(self) -> str:
         return f"A {self.name} is a form of government where officials are elected by the citizens."
@@ -28,7 +36,7 @@ class Republic(Government):
 
 class Theocracy(Government):
     def __init__(self, name: str) -> None:
-        super().__init__(name=name)
+        super().__init__(name=name, type=GovernmentType.THEOCRACY)
 
     def get_description(self) -> str:
         return f"A {self.name} is a form of government where religious leaders hold the power."

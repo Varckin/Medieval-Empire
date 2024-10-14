@@ -1,4 +1,9 @@
-from Population.population import Population
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from Population.population import Population
+
 
 class TaxSystem:
     def __init__(self) -> None:
