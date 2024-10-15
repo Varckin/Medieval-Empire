@@ -1,0 +1,21 @@
+{
+    "gameName": "Medieval Empire",
+    "countryName": "Spain",
+    "government": "Monarchy",
+    "resourceName": "Resources:",
+    "resourceGold": "Gold",
+    "resourceSilver": "Silver",
+    "resourceWheat": "Wheat",
+    "resourceWood": "Wood",
+    "resourceStone": "Stone",
+    "resourceIron": "Iron",
+    "resourceWine": "Wine",
+    "resourceAmber": "Amber",
+    "actionConstruction": "Construction",
+    "actionChronicles": "Chronicles",
+    "actionTrainArmy": "Train Army",
+    "actionDiplomacy": "Diplomacy",
+    "actionNextTurn": "Next Turn ▶",
+    "armyName": "Spanish Army",
+    "armySize": "Army Size"
+}

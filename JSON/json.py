@@ -16,6 +16,6 @@ def write_json(file_name: str, dict_data: dict) -> None:
 
 # Temporarily English
 def getValue(key: str, lang: str = "EN") -> str:
-    with open(file=f"{current_path}/Localization/{lang}.json", mode="w", encoding="utf-8") as file:
+    with open(file=f"{current_path}/Localization/{lang}.json", mode="r", encoding="utf-8") as file:
         localization: dict = load(fp=file)
         return localization.get(key)

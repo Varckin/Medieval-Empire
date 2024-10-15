@@ -1,0 +1,21 @@
+{
+    "gameName": "Medieval Empire",
+    "countryName": "Испания",
+    "government": "Монархия",
+    "resourceName": "Ресурсы:",
+    "resourceGold": "Золото",
+    "resourceSilver": "Серебро",
+    "resourceWheat": "Пшеница",
+    "resourceWood": "Дерево",
+    "resourceStone": "Камень",
+    "resourceIron": "Железо",
+    "resourceWine": "Вино",
+    "resourceAmber": "Янтарь",
+    "actionConstruction": "Строительство",
+    "actionChronicles": "Летопись",
+    "actionTrainArmy": "Тренировать армию",
+    "actionDiplomacy": "Дипломатия",
+    "actionNextTurn": "Следующий ход ▶",
+    "armyName": "Испанская армия",
+    "armySize": "Размер армии"
+}
