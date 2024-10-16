@@ -1,33 +1,67 @@
-from Resource.resource import Gold, Wheat, Wood, Iron
-from Religion.religion import Religion
-from Population.population import Population
-from Army.army import Army
-from Government.government import Government
-from Culture.culture import Culture
+from Resource.resource import *
+from Building.building import *
+
+from Religion.religion import *
+from Culture.culture import *
+
+from Population.population import *
+from Tax.tax import *
+
+from Government.government import *
+from Diplomacy.diplomacy import *
+from Army.army import *
 
 
 class Country:
     def __init__(self, name: str, government: Government,
-                 religion: Religion, culture: Culture, population: Population,
+                 religion: Religion, culture: Culture,
+                 population: Population, tax: TaxSystem,
+                 diplomacy: Diplomacy, contryRelations: DiplomaticRelations,
                  army: Army, gold: Gold) -> None:
         """
-        param name: Name Country
-        param political_system: Political system Country
-        param religion: Religion Country
-        param population: Population Country
-        param army: Army Country
+        name (str): Name of the country.
+        government (Government): The government system governing the country.
+        religion (Religion): The primary religion practiced within the country.
+        culture (Culture): The cultural identity, practices, and values of the country.
+        population (Population): Details about the country's population, such as size and growth.
+        tax (TaxSystem): The tax system implemented to manage the country's economy.
+        diplomacy (Diplomacy): The country’s approach to international relations and diplomacy.
+        contryRelations (DiplomaticRelations): The country’s current relationships with other nations.
+        army (Army): The military forces and defense structure of the country.
+        gold (Gold): The country's gold reserves, representing its economic wealth.
         """
         self.name: str = name
         self.government: Government = government
+
         self.religion: Religion = religion
         self.culture: Culture = culture
+
         self.population: Population = population
+        self.tax: TaxSystem = tax
+
+        self.diplomacy: Diplomacy = diplomacy
+        self.contryRelations: DiplomaticRelations = contryRelations
+
         self.army: Army = army
         self.gold: Gold = gold
+
         self.resources: dict = {
+            "silver": Silver(),
             "wheat": Wheat(),
             "wood": Wood(),
-            "iron": Iron()
+            "stone": Stone(),
+            "iron": Iron(),
+            "wine": Wine(),
+            "amber": Amber()
+        }
+        self.building: dict = {
+            "farm": Farm(),
+            "quarry": Quarry(),
+            "vineyard": Vineyard(),
+            "ironmine": IronMine(),
+            "ambermine": AmberMine(),
+            "silvermine": SilverMine(),
+            "barracks": Barracks()
         }
 
     def produce_resource(self, resource_name, amount):
@@ -45,5 +79,6 @@ class Country:
             self.religion,
             self.population,
             self.army.size,
-            self.resources
+            self.resources,
+            self.building
         )
