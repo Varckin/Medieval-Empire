@@ -1,3 +1,5 @@
+from typing import List, Dict
+
 from Resource.resource import *
 from Building.building import *
 
@@ -10,6 +12,8 @@ from Tax.tax import *
 from Government.government import *
 from Diplomacy.diplomacy import *
 from Army.army import *
+
+from Modifier.Modifier import Modifiers
 
 
 class Country:
@@ -45,7 +49,9 @@ class Country:
         self.army: Army = army
         self.gold: Gold = gold
 
-        self.resources: dict = {
+        self.currentModifiers: List[Modifiers] = []
+
+        self.resources: Dict[str, Resource] = {
             "silver": Silver(),
             "wheat": Wheat(),
             "wood": Wood(),
@@ -71,6 +77,14 @@ class Country:
     def consume_resource(self, resource_name, amount):
         if resource_name in self.resources and self.resources[resource_name].amount >= amount:
             self.resources[resource_name].consume(amount)
+
+    def addModifier(self, modifier: Modifiers) -> None:
+        self.currentModifiers.append(modifier)
+
+    def applyModifiers(self) -> None:
+        for modifier in self.currentModifiers:
+            if modifier.goldBaff.type == "Gold":
+                modifier.goldBaff.value + self.gold.amount
 
     def put_status_country(self):
         return (
