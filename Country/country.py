@@ -13,7 +13,7 @@ from Government.government import *
 from Diplomacy.diplomacy import *
 from Army.army import *
 
-from Modifier.Modifier import Modifiers
+from Modifier.modifier import Modifiers
 
 
 class Country:
