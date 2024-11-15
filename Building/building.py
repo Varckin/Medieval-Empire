@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from BaseConstants.baseConstants import BuildingConstants
 
 
 if TYPE_CHECKING:
@@ -6,7 +7,7 @@ if TYPE_CHECKING:
 
 
 class Building:
-    def __init__(self, name: str, resource: Resource=None, production_rate: int=0) -> None:
+    def __init__(self, name: str, resource: Resource=None, productionRate: int=0) -> None:
         """
         param name: Name of the building 
         param resource: Type of resource produced
@@ -14,47 +15,50 @@ class Building:
         """
         self.name: str = name
         self.resource: Resource = resource
-        self.production_rate: int = production_rate
+        self.productionRate: int = productionRate
 
     def produce(self):
         if self.resource:
-            self.resource.produce(self.production_rate)
+            self.resource.produce(self.productionRate)
+
+    def debug(self) -> str:
+        return f"{self.name}: {self.resource.name} -> {self.productionRate}"
 
 
 class Farm(Building):
     def __init__(self, wheat: Resource):
-        super().__init__(name="Farm", resource=wheat, production_rate=80)
+        super().__init__(name="Farm", resource=wheat, productionRate=BuildingConstants.baseFarmProductionRate.value)
 
 
 class Quarry(Building):
     def __init__(self, stone: Resource):
-        super().__init__(name="Quarry", resource=stone, production_rate=40)
+        super().__init__(name="Quarry", resource=stone, productionRate=BuildingConstants.baseQuarryProductionRate.value)
 
 
 class Vineyard(Building):
     def __init__(self, wine: Resource):
-        super().__init__(name="Vineyard", resource=wine, production_rate=12)
+        super().__init__(name="Vineyard", resource=wine, productionRate=BuildingConstants.baseVineyardProductionRate.value)
 
 
 class IronMine(Building):
     def __init__(self, iron: Resource):
-        super().__init__(name="Iron Mine", resource=iron, production_rate=30)
+        super().__init__(name="Iron Mine", resource=iron, productionRate=BuildingConstants.baseIronMineProductionRate.value)
 
 
 class AmberMine(Building):
     def __init__(self, amber: Resource):
-        super().__init__(name="Amber Mine", resource=amber, production_rate=5)
+        super().__init__(name="Amber Mine", resource=amber, productionRate=BuildingConstants.baseAmderMineProductionRate.value)
 
 
 class SilverMine(Building):
     def __init__(self, silver: Resource):
-        super().__init__(name="Silver Mine", resource=silver, production_rate=14)
+        super().__init__(name="Silver Mine", resource=silver, productionRate=BuildingConstants.baseSilverMineProductionRate.value)
 
 
 class Barracks(Building):
     def __init__(self):
         super().__init__(name="Barracks")
-        self.max_soldiers_increase = 100
+        self.maxSoldiersIncrease: int = BuildingConstants.baseBarracksMaxSoldiersIncrease.value
 
-    def increase_army_capacity(self):
-        return self.max_soldiers_increase
+    def debug(self) -> str:
+        return f"{self.name}: -> {self.maxSoldiersIncrease}"

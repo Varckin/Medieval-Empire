@@ -12,9 +12,12 @@ class Government:
         self.name: str = name
         self.type: GovernmentType = type
         self.royal_marriage: bool = False
-
+        
     def get_description(self) -> str:
         return f"This is a {self.name} government"
+
+    def debug(self) -> str:
+        return f"{self.name} - {self.type.value}\nAllow Marrieage?: {self.royal_marriage}"
     
 
 class Monarchy(Government):

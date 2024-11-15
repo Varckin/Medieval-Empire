@@ -14,6 +14,9 @@ class Culture:
         self.name: str = name
         self.cultureGroup: CultureGroup = cultureGroup
         self.description: str = description
+    
+    def debug(self) -> str:
+        return f"{self.name}: {self.cultureGroup.value}\n{self.description}"
 
 
 class RussianCulture(Culture):
