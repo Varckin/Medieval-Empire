@@ -16,10 +16,12 @@ class Building:
         self.name: str = name
         self.resource: Resource = resource
         self.productionRate: int = productionRate
+        self.modifierProduction: float = 0
+        self.currentProductionRate: int = self.productionRate * self.modifierProduction
 
     def produce(self):
         if self.resource:
-            self.resource.produce(self.productionRate)
+            self.resource.produce(self.currentProductionRate)
 
     def debug(self) -> str:
         return f"{self.name}: {self.resource.name} -> {self.productionRate}"

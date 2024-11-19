@@ -1,11 +1,12 @@
 from typing import Dict
+from BaseConstants.baseConstants import PrestigeConstants
 
 
 class Prestige:
     def __init__(self, prestigeValue: float = 20.0) -> None:
         self.prestigeValue: float = prestigeValue
-        self.basePrestige: float = 0.0
-        self.prestigeCoefficient: float = 0.008
+        self.basePrestige: float = PrestigeConstants.basePrestigeValue.value
+        self.prestigeCoefficient: float = PrestigeConstants.basePrestigeCoefficient.value
         self.modifierСoefficient: float = 0
         self.modifiers: Dict[str, float] = {
 

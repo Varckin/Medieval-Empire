@@ -39,6 +39,7 @@ class Resource:
         self.rarity: ResourceRarity = rarity
         self.amount: int = amount
         self.price: float = price
+        self.is_currency: bool = False
 
     def produce(self, amount: int) -> None:
         self.amount += amount
@@ -50,9 +51,8 @@ class Resource:
     def get_total_amount_resource(self) -> float:
         return self.amount * self.price
 
-    def __repr__(self) -> str:
-        """ Debug system """
-        return f"{self.name.value}: {self.amount}"
+    def debug(self) -> str:
+        return f"{self.name.value}: {self.amount}\nPrice: {self.price}"
 
 
 class Gold(Resource):

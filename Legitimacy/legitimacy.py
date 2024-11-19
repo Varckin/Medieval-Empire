@@ -1,4 +1,5 @@
 from typing import Dict, TYPE_CHECKING
+from BaseConstants.baseConstants import LegitimacyConstants
 
 if TYPE_CHECKING:
     from Government.government import Government, GovernmentType
@@ -9,7 +10,7 @@ class Legitimacy:
         self.name: str = self.getName()
         self.governmentType: Government = governmentType
         self.legitimacyValue: float = legitimacyValue
-        self.baseCoefficient: float = 0.05
+        self.baseCoefficient: float = LegitimacyConstants.baseCoefficientLegitimacy.value
         self.modifierСoefficient: float = 0
         self.modifiers: Dict[str, float] = {
 

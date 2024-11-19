@@ -1,11 +1,11 @@
 from typing import Dict
-
+from BaseConstants.baseConstants import StabilityConstants
 
 class Stability:
     def __init__(self, stabilityValue: float = 50.0) -> None:
         self.stabilityValue: float = stabilityValue
-        self.baseStability: float = 50.0
-        self.stabilizationCoefficient: float = 0.05
+        self.baseStability: float = StabilityConstants.baseStability.value
+        self.stabilizationCoefficient: float = StabilityConstants.baseStabilizationCoefficient.value
         self.modifierСoefficient: float = 0
         self.modifiers: Dict[str, float] = {
 

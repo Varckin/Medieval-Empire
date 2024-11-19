@@ -1,47 +1,59 @@
+from BaseConstants.baseConstants import PopulationConstants
 
 
 class Population:
-    def __init__(self, total_population: int, working_class_percentage: float =0.55,
-                 unemployed_percentage: float =0.17, children_percentage: float =0.12,
-                 elderly_percentage: float =0.16, wheat_consumption: float= 0.015,
-                 birth_rate: float =0.02, death_rate: float =0.01) -> None:
+    def __init__(self, totalPopulation: int, workingClassPercentage: float =PopulationConstants.baseWorkingClassPercentage.value,
+                 unemployedPercentage: float =PopulationConstants.baseUnemployedPercentage.value,
+                 childrenPercentage: float =PopulationConstants.baseChildrenPercentage.value,
+                 elderlyPercentage: float =PopulationConstants.baseElderlyPercentage.value,
+                 wheatConsumption: float =PopulationConstants.baseWheatConsumption.value,
+                 birthRate: float =PopulationConstants.baseBirthRate.value, deathRate: float =PopulationConstants.baseDeathRate.value) -> None:
         """
-        :param total_population: Total population.
-        :param working_class_percentage: Percentage of the working class in the total population.
-        :param unemployed_percentage: Percentage of unemployed individuals.
-        :param children_percentage: Percentage of children (under 16).
-        :param elderly_percentage: Percentage of elderly individuals (over 60).
-        :param wheat_consumption: Сonsumption per person.
-        :param birth_rate: Basic fertility rate
-        :param death_rate: Basic mortality rate
+        :param totalPopulation: Total population.
+        :param workingClassPercentage: Percentage of the working class in the total population.
+        :param unemployedPercentage: Percentage of unemployed individuals.
+        :param childrenPercentage: Percentage of children (under 16).
+        :param elderlyPercentage: Percentage of elderly individuals (over 60).
+        :param wheatConsumption: Сonsumption per person.
+        :param birthRate: Basic fertility rate
+        :param deathRate: Basic mortality rate
         """
-        self.total_population: int = total_population
-        self.working_class_percentage: float = working_class_percentage
-        self.unemployed_percentage: float = unemployed_percentage
-        self.children_percentage: float = children_percentage
-        self.elderly_percentage: float = elderly_percentage
+        # Base constants
+        self.totalPopulation: int = totalPopulation
+        self.workingClassPercentage: float = workingClassPercentage
+        self.unemployedPercentage: float = unemployedPercentage
+        self.childrenPercentage: float = childrenPercentage
+        self.elderlyPercentage: float = elderlyPercentage
 
-        self.wheat_consumption: float = wheat_consumption
-        self.base_birth_rate: float = birth_rate
-        self.base_death_rate: float = death_rate
+        self.basewheatConsumption: float = wheatConsumption
+        self.baseBirthRate: float = birthRate
+        self.baseDeathRate: float = deathRate
+        # Current constants
+        self.currentwheatConsumption: float = self.basewheatConsumption
+        self.currentBirthRate: float = self.baseBirthRate
+        self.currentDeathRate: float = self.baseDeathRate
 
-        self.current_birth_rate: float = self.base_birth_rate
-        self.current_death_rate: float = self.base_death_rate
-
+        self.adjust_rates_by_tax()
         self.calculate_categories()
 
     def calculate_categories(self) -> None:
-        self.working_class: int = int(self.total_population * self.working_class_percentage)
-        self.unemployed: int = int(self.total_population * self.unemployed_percentage)
-        self.children: int = int(self.total_population * self.children_percentage)
-        self.elderly: int = int(self.total_population * self.elderly_percentage)
+        self.workingClass: int = int(self.totalPopulation * self.workingClassPercentage)
+        self.unemployed: int = int(self.totalPopulation * self.unemployedPercentage)
+        self.children: int = int(self.totalPopulation * self.childrenPercentage)
+        self.elderly: int = int(self.totalPopulation * self.elderlyPercentage)
 
     def update_population(self) -> None:
-        population_increase: int = int(self.total_population * self.current_birth_rate) - int(self.total_population * self.current_death_rate)
-        self.total_population += population_increase
+        population_increase: int = int(self.totalPopulation * self.currentBirthRate) - int(self.totalPopulation * self.currentDeathRate)
+        self.totalPopulation += population_increase
         self.calculate_categories()
 
-    def adjust_rates_by_tax(self, tax_level: str, tax_type: str) -> None:
+    def add_population(self, value: int) -> None:
+        self.totalPopulation += value
+
+    def delete_population(self, value: int) -> None:
+        self.totalPopulation -= value
+
+    def adjust_rates_by_tax(self, tax_level: str = "medium", tax_type: str = "base") -> None:
         """
         Adjusts birth and death rates depending on the tax burden.
 
@@ -58,7 +70,7 @@ class Population:
             'high': (0.8, 1.2),
             'extreme': (0.6, 1.6)
         }
-        
+        # The military tax needs to be revised to take into account the country's diplomatic status.
         military_tax_effects: dict = {
             'low': (1.1, 0.85),
             'medium': (1.0, 1.0),
@@ -71,9 +83,24 @@ class Population:
         elif tax_type == 'military':
             birth_modifier, death_modifier = military_tax_effects[tax_level]
         
-        self.current_birth_rate = self.base_birth_rate * birth_modifier
-        self.current_death_rate = self.base_death_rate * death_modifier
+        self.currentBirthRate = self.baseBirthRate * birth_modifier
+        self.currentDeathRate = self.baseDeathRate * death_modifier
 
     def consume_food(self) -> int:
-        food_needed: float = self.total_population * self.wheat_consumption
+        food_needed: float = self.totalPopulation * self.currentwheatConsumption
         return int(food_needed)
+    
+    def debug(self) -> str:
+        text: str = f"""
+Total Population Statistics ({self.totalPopulation}):
+- Working Class Percentage: {self.workingClass}
+- Unemployed Percentage: {self.unemployed}
+- Children Percentage: {self.children}
+- Elderly Percentage: {self.elderly}
+
+Economic Parameters:
+- Wheat Consumption: {int(self.totalPopulation * self.currentwheatConsumption)} per year
+- Birth Rate: {int(self.totalPopulation * self.currentBirthRate)} per year
+- Death Rate: {int(self.totalPopulation * self.currentDeathRate)} per year
+                    """
+        return text

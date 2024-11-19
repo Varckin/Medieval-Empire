@@ -52,15 +52,15 @@ class Leader:
         self.dictPoints["Diplomatic Points"] += self.dipPoints
         self.dictPoints["Military Points"] += self.milPoints
 
-    def debugInfo(self) -> None:
+    def debug(self) -> str:
         text: str = f"""
 Leader: {self.titular} {self.name}
 Age: {self.age}
 Death: {self.checkDeath()}
-Government Type: {self.governmentType.value}")
+Government Type: {self.governmentType.type}")
 Administrative Points: {self.dictPoints['Administrative Points']}")
 Diplomatic Points: {self.dictPoints['Diplomatic Points']}")
 Military Points: {self.dictPoints['Military Points']}")
 {"=" * 40}
 """
-        print(text)
+        return text

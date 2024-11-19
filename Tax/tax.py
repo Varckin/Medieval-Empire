@@ -22,12 +22,12 @@ class TaxSystem:
             'extreme': (0.4, 0.15)
         }
 
-    def collect_taxes(self, population: Population, tax_level: str, tax_type: str = 'base') -> int:
+    def collect_taxes(self, population: Population, tax_level: str = 'medium', tax_type: str = 'base') -> int:
         worker_tax, elderly_tax = self.tax_levels[tax_level]
 
         population.adjust_rates_by_tax(tax_level, tax_type) # The impact of tax on birth and death rates
         
-        worker_tax: float = population.working_class * worker_tax
+        worker_tax: float = population.workingClass * worker_tax
         elderly_tax: float = population.elderly * elderly_tax
         unemployed_tax: int = 0
         children_tax: int = 0

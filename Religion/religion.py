@@ -15,6 +15,9 @@ class Religion:
         self.religionGroup: ReligionGroup = religionGroup
         self.description: str = description
 
+    def debug(self) -> str:
+        return f"{self.name}: {self.religionGroup.value}\n{self.description}"
+
 
 class Catholicism(Religion):
     def __init__(self):
