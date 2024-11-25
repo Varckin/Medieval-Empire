@@ -13,7 +13,12 @@ from Government.government import *
 from Diplomacy.diplomacy import *
 from Army.army import *
 
-from Modifier.modifier import Modifiers
+from Modifier.modifier import *
+from Modifier.modifierTypes import *
+
+from Legitimacy.legitimacy import *
+from Stability.stability import *
+from Prestige.prestige import *
 
 
 class Country:
@@ -21,7 +26,8 @@ class Country:
                  religion: Religion, culture: Culture,
                  population: Population, tax: TaxSystem,
                  diplomacy: Diplomacy, contryRelations: DiplomaticRelations,
-                 army: Army, gold: Gold) -> None:
+                 army: Army, gold: Gold, legitimacy: Legitimacy,
+                 stability: Stability, prestige: Prestige) -> None:
         """
         name (str): Name of the country.
         government (Government): The government system governing the country.
@@ -33,6 +39,9 @@ class Country:
         contryRelations (DiplomaticRelations): The country’s current relationships with other nations.
         army (Army): The military forces and defense structure of the country.
         gold (Gold): The country's gold reserves, representing its economic wealth.
+        legitimacy: (Legitimacy): Legitimacy - a parameter showing how much the people recognize the power of the ruler.
+        stability: (Stability): Stability - shows the stability of the country.
+        prestige: (Prestige): Prestige - shows how much the country is respected in the international arena.
         """
         self.name: str = name
         self.government: Government = government
@@ -48,6 +57,10 @@ class Country:
 
         self.army: Army = army
         self.gold: Gold = gold
+
+        self.legitimacy: Legitimacy = legitimacy
+        self.stability: Stability = stability
+        self.prestige: Prestige = prestige
 
         self.currentModifiers: List[Modifiers] = []
 
@@ -83,8 +96,8 @@ class Country:
 
     def applyModifiers(self) -> None:
         for modifier in self.currentModifiers:
-            if modifier.goldBaff.type == "Gold":
-                modifier.goldBaff.value + self.gold.amount
+            if modifier.BaffAttackArmy.type == ModifierTypes.armyAttacks:
+                modifier.BaffAttackArmy.value + self.army.currentAttack
 
     def put_status_country(self):
         return (
