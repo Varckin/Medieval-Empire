@@ -1,14 +1,24 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from BaseConstants.baseConstants import ArmyConstants
+
+if TYPE_CHECKING:
+    from Legitimacy.legitimacy import Legitimacy
+    from Stability.stability import Stability
 
 
 class Army:
-    def __init__(self, name: str="Army", size: int=ArmyConstants.baseSize.value,
+    def __init__(self, legitimacy: Legitimacy, stability: Stability, 
+                 name: str="Army", size: int=ArmyConstants.baseSize.value,
                  attack: float=ArmyConstants.BaseAttacks.value, defense: float=ArmyConstants.baseDefense.value,
                  experience: int=ArmyConstants.baseExperience.value, level: int=ArmyConstants.baseLevel.value,
                  foodConsumptionPerSoldier: float=ArmyConstants.baseFoodConsumptionPerSoldier.value,
                  goldConsumptionPerSoldier: float=ArmyConstants.baseGoldConsumptionPerSoldier.value,
                  experienceGain: int = ArmyConstants.baseExperienceGain.value) -> None:
         """
+        :param legitimacy: Legitimacy mechanics for calculating modifiers.
+        :param stability: Stability mechanics for calculating modifiers.
         :param name: Army name.
         :param size: Army size.
         :param attack: Army attack power.
@@ -19,6 +29,13 @@ class Army:
         :param goldConsumptionPerSoldier: Army salary.
         :param experienceGain: Experience gained from training the army.
         """
+        self.legitimacy: Legitimacy = legitimacy
+        self.legitimacyModifierAttacks: float = 0
+        self.legitimacyModifierDefense: float = 0
+        self.stability: Stability = stability
+        self.stabilityModifierAttacks: float = 0
+        self.stabilityModifierDefense: float = 0
+
         # Base param
         self.name: str = name
         self.size: int = size
@@ -40,6 +57,9 @@ class Army:
         self.currentExperience: int = self.experience
         self.currentLevel: int = self.level
         self.currentExperienceGain: int = self.experienceGain
+
+        self.bonusAttackFromLevel: float = 0
+        self.bonusDefenseFromLevel: float = 0
 
         self.currentFoodConsumptionPerSoldier: float = self.foodConsumptionPerSoldier
         self.currentGoldConsumptionPerSoldier: float = self.goldConsumptionPerSoldier
@@ -70,22 +90,44 @@ class Army:
     def check_level_up(self) -> None:
         if self.currentLevel < self.maxLevel:
             nextLevelThreshold: int = self.experienceLevelList[self.level - 1]
-            while self.currentExperience >= nextLevelThreshold and self.currentLevel < self.maxLevel:
+            while self.currentExperience >= nextLevelThreshold and self.currentLevel <= self.maxLevel:
                 self.level_up(nextLevelThreshold)
-                if self.currentLevel < self.maxLevel:
+                if self.currentLevel <= self.maxLevel:
                     nextLevelThreshold: int = self.experienceLevelList[self.level - 1]
 
     def level_up(self, nextLevelThreshold: int) -> None:
         self.currentExperience -= nextLevelThreshold
         self.currentLevel += 1
-        self.currentAttack += 0.6
-        self.currentDefense += 0.3
+        self.bonusAttackFromLevel += 0.6
+        self.bonusDefenseFromLevel += 0.3
         self.currentFoodConsumptionPerSoldier += 0.4
         self.currentGoldConsumptionPerSoldier += 0.65
+
+        self.applyAllModifiers()
+
+    def stabilityInfluence(self) -> None:
+        self.stabilityModifierAttacks = round((self.stability.stabilityValue - 50) / 60, 2)
+        self.stabilityModifierDefense = round((self.stability.stabilityValue - 50) / 80, 2)
+
+    def LegitimacyInfluence(self) -> None:
+        self.legitimacyModifierAttacks = round((self.legitimacy.legitimacyValue - 80) / 120, 2)
+        self.legitimacyModifierDefense = round((self.legitimacy.legitimacyValue - 80) / 135, 2)
+
+    def applyAllModifiers(self) -> None:
+        self.stabilityInfluence()
+        self.LegitimacyInfluence()
+
+        self.currentAttack = self.attack + self.bonusAttackFromLevel + self.stabilityModifierAttacks + self.legitimacyModifierAttacks
+        self.currentDefense = self.defense + self.bonusDefenseFromLevel + self.stabilityModifierDefense + self.legitimacyModifierDefense
+
+    def saveParametrsArmy(self) -> dict:
+        pass
 
     def debug(self) -> None:
         print(f"{self.name}: {self.size}")
         print(f"Attacks: {self.currentAttack} - Defense: {self.currentDefense}")
         print(f"Level: {self.currentLevel} - Experience: {self.currentExperience}")
+        print(f"Modifiers Attacks: {self.stabilityModifierAttacks + self.legitimacyModifierAttacks}")
+        print(f"Modifiers Defense: {self.stabilityModifierDefense + self.legitimacyModifierDefense}")
         print(f"Food Consumption Per Soldier: {self.currentFoodConsumptionPerSoldier}")
         print(f"Gold Consumption Per Soldier: {self.currentGoldConsumptionPerSoldier}")

@@ -11,6 +11,11 @@ if TYPE_CHECKING:
 
 class Legitimacy:
     def __init__(self, governmentType: Government, stability: Stability, legitimacyValue: float = 80.0) -> None:
+        """
+        :param governmentType: Government type.
+        :param stability: Stability mechanics for modifier calculations.
+        :param legitimacyValue: Legitimacy value.
+        """
         self.governmentType: Government = governmentType
         self.name: str = self.getName()
         self.stability: Stability = stability
@@ -49,3 +54,12 @@ class Legitimacy:
         self.stabilityInfluence()
 
         self.currentCoefficient = self.baseCoefficient + self.stabilityModifier
+
+    def saveParametrsLegitimacy(self) -> dict:
+        pass
+
+    def debug(self) -> None:
+        print(f"Name: {self.name}")
+        print(f"Legitimacy: {self.legitimacyValue}")
+        print(f"Modifiers: {self.stabilityModifier}")
+        print(f"Current coefficient: {self.currentCoefficient}")

@@ -9,6 +9,10 @@ if TYPE_CHECKING:
 
 class Stability:
     def __init__(self, legitimacy: Legitimacy, stabilityValue: float = 50.0) -> None:
+        """
+        :param legitimacy: Legitimacy mechanics for calculating modifiers.
+        :param stabilityValue: Stability value.
+        """
         self.stabilityValue: float = stabilityValue
         self.legitimacy: Legitimacy = legitimacy
         self.legitimacyModifier: float = 0
@@ -45,3 +49,11 @@ class Stability:
         self.legitimacyInfluence()
 
         self.currentStabilizationCoefficient = self.baseStabilizationCoefficient + self.legitimacyModifier
+
+    def saveParametrsStability(self) -> dict:
+        pass
+
+    def debug(self) -> None:
+        print(f"Value: {self.stabilityValue}")
+        print(f"Current coefficient: {self.currentStabilizationCoefficient}")
+        print(f"Modifiers: {self.legitimacyModifier}")

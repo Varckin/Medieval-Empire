@@ -6,7 +6,7 @@ class ArmyConstants(Enum):
     BaseAttacks = 0.7
     baseDefense = 0.4
     baseExperience = 0
-    baseLevel = 0
+    baseLevel = 1
 
     baseFoodConsumptionPerSoldier = 0.2
     baseGoldConsumptionPerSoldier = 0.15
