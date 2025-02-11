@@ -1,20 +1,27 @@
-from typing import Dict, TYPE_CHECKING
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from BaseConstants.baseConstants import LegitimacyConstants
+from Government.government import GovernmentType
 
 if TYPE_CHECKING:
-    from Government.government import Government, GovernmentType
+    from Government.government import Government
+    from Stability.stability import Stability
 
 
 class Legitimacy:
-    def __init__(self, governmentType: Government, legitimacyValue: float = 80.0) -> None:
-        self.name: str = self.getName()
+    def __init__(self, governmentType: Government, stability: Stability, legitimacyValue: float = 80.0) -> None:
         self.governmentType: Government = governmentType
+        self.name: str = self.getName()
+        self.stability: Stability = stability
         self.legitimacyValue: float = legitimacyValue
-        self.baseCoefficient: float = LegitimacyConstants.baseCoefficientLegitimacy.value
-        self.modifierСoefficient: float = 0
-        self.modifiers: Dict[str, float] = {
+        self.stabilityModifier: float = 0
 
-        }
+        # BaseValue
+        self.baseCoefficient: float = LegitimacyConstants.baseCoefficientLegitimacy.value
+
+        # CurrentValue
+        self.currentCoefficient: float = self.baseCoefficient
 
     def getName(self) -> str:
         if self.governmentType.type == GovernmentType.MONARCHY:
@@ -31,13 +38,14 @@ class Legitimacy:
     def checkValueLegitimacy(self) -> None:
         self.legitimacyValue = round(max(0, min(100, self.legitimacyValue)), 2)
 
-    def applyModifiers(self) -> None:
-        self.modifierСoefficient: float = 0
-        if len(self.modifiers) >= 1:
-            for _, value in self.modifiers.items():
-                self.modifierСoefficient += value
-    
-    def applicationOfAllCoefficients(self) -> None:
-        self.applyModifiers()
-        self.legitimacyValue = self.legitimacyValue + self.baseCoefficient + self.modifierСoefficient
-        self.checkValueLegitimacy()
+    def changeEveryTurnLegitimacy(self) -> None:
+        self.applyAllModifiers()
+        self.changeLegitimacy(self.currentCoefficient)
+
+    def stabilityInfluence(self) -> None:
+        self.stabilityModifier = (self.stability.stabilityValue - 50) / 100
+
+    def applyAllModifiers(self) -> None:
+        self.stabilityInfluence()
+
+        self.currentCoefficient = self.baseCoefficient + self.stabilityModifier

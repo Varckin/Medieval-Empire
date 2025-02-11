@@ -1,41 +1,47 @@
-from typing import Dict
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
 from BaseConstants.baseConstants import StabilityConstants
 
+if TYPE_CHECKING:
+    from Legitimacy.legitimacy import Legitimacy
+
+
 class Stability:
-    def __init__(self, stabilityValue: float = 50.0) -> None:
+    def __init__(self, legitimacy: Legitimacy, stabilityValue: float = 50.0) -> None:
         self.stabilityValue: float = stabilityValue
+        self.legitimacy: Legitimacy = legitimacy
+        self.legitimacyModifier: float = 0
+
+        # BaseValue
         self.baseStability: float = StabilityConstants.baseStability.value
-        self.stabilizationCoefficient: float = StabilityConstants.baseStabilizationCoefficient.value
-        self.modifierСoefficient: float = 0
-        self.modifiers: Dict[str, float] = {
+        self.baseStabilizationCoefficient: float = StabilityConstants.baseStabilizationCoefficient.value
 
-        }
+        # CurrentValue
+        self.currentStabilizationCoefficient: float = self.baseStabilizationCoefficient
 
-    def increaseStability(self, points: float) -> None:
+    def changeStability(self, points: float) -> None:
         self.stabilityValue = self.stabilityValue + points
         self.checkValueStability()
 
-    def decreaseStability(self, points: float) -> None:
-        self.stabilityValue = self.stabilityValue - points
-        self.checkValueStability()
-
     def stabilizationOfStability(self) -> None:
-        self.applyModifiers()
-
+        self.applyAllModifiers()
         if self.stabilityValue > self.baseStability:
-            step: float = (self.stabilizationCoefficient + self.modifierСoefficient) * (self.stabilityValue - self.baseStability)
-            self.decreaseStability(step)
+            step: float = - (self.currentStabilizationCoefficient * (self.stabilityValue - self.baseStability))
+            self.changeStability(step)
         elif self.stabilityValue < self.baseStability:
-            step: float = (self.stabilizationCoefficient + self.modifierСoefficient) * (self.baseStability - self.stabilityValue)
-            self.increaseStability(step)
-
+            step: float = self.currentStabilizationCoefficient * (self.baseStability - self.stabilityValue)
+            self.changeStability(step)
+        
         self.checkValueStability()
-    
-    def applyModifiers(self) -> None:
-        self.modifierСoefficient: float = 0
-        if len(self.modifiers) >= 1:
-            for _, value in self.modifiers.items():
-                self.modifierСoefficient += value
         
     def checkValueStability(self) -> None:
         self.stabilityValue = round(max(0, min(100, self.stabilityValue)), 2)
+
+    def legitimacyInfluence(self) -> None:
+        self.legitimacyModifier = (self.legitimacy.legitimacyValue - 60) / 100
+
+    def applyAllModifiers(self) -> None:
+        self.legitimacyInfluence()
+
+        self.currentStabilizationCoefficient = self.baseStabilizationCoefficient + self.legitimacyModifier
