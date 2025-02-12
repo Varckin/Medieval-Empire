@@ -49,3 +49,7 @@ class PrestigeConstants(Enum):
 class StabilityConstants(Enum):
     baseStability = 50.0
     baseStabilizationCoefficient = 0.05
+
+
+class CorruptionConstants(Enum):
+    baseCorruptionCoefficient = 0.00

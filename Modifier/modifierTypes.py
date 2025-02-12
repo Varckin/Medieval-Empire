@@ -39,3 +39,6 @@ class ModifierTypes(Enum):
     # Stability Types
     stabilityValue = "Stability coefficient"
     stabilizationCoefficient = "Stabilization threshold of stability"
+
+    # Corrution Types
+    corruptionCoefficient = "Changing corruption in the country."

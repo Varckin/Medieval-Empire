@@ -6,10 +6,11 @@ from BaseConstants.baseConstants import ArmyConstants
 if TYPE_CHECKING:
     from Legitimacy.legitimacy import Legitimacy
     from Stability.stability import Stability
+    from Corruption.corruption import Corruption
 
 
 class Army:
-    def __init__(self, legitimacy: Legitimacy, stability: Stability, 
+    def __init__(self, legitimacy: Legitimacy, stability: Stability, corruption: Corruption,
                  name: str="Army", size: int=ArmyConstants.baseSize.value,
                  attack: float=ArmyConstants.BaseAttacks.value, defense: float=ArmyConstants.baseDefense.value,
                  experience: int=ArmyConstants.baseExperience.value, level: int=ArmyConstants.baseLevel.value,
@@ -19,6 +20,7 @@ class Army:
         """
         :param legitimacy: Legitimacy mechanics for calculating modifiers.
         :param stability: Stability mechanics for calculating modifiers.
+        :param corruption: Corruption mechanics for calculating modifiers.
         :param name: Army name.
         :param size: Army size.
         :param attack: Army attack power.
@@ -35,6 +37,9 @@ class Army:
         self.stability: Stability = stability
         self.stabilityModifierAttacks: float = 0
         self.stabilityModifierDefense: float = 0
+        self.corruption: Corruption = corruption
+        self.corruptionModifierAttacks: float = 0
+        self.corruptionModifierDefense: float = 0
 
         # Base param
         self.name: str = name
@@ -109,16 +114,21 @@ class Army:
         self.stabilityModifierAttacks = round((self.stability.stabilityValue - 50) / 60, 2)
         self.stabilityModifierDefense = round((self.stability.stabilityValue - 50) / 80, 2)
 
-    def LegitimacyInfluence(self) -> None:
+    def legitimacyInfluence(self) -> None:
         self.legitimacyModifierAttacks = round((self.legitimacy.legitimacyValue - 80) / 120, 2)
         self.legitimacyModifierDefense = round((self.legitimacy.legitimacyValue - 80) / 135, 2)
 
+    def corruptionInfluence(self) -> None:
+        self.corruptionModifierAttacks = round(- (self.corruption.corruptionValue - 0) / 25, 2)
+        self.corruptionModifierDefense = round(- (self.corruption.corruptionValue - 0) / 35, 2)
+
     def applyAllModifiers(self) -> None:
         self.stabilityInfluence()
-        self.LegitimacyInfluence()
+        self.legitimacyInfluence()
+        self.corruptionInfluence()
 
-        self.currentAttack = self.attack + self.bonusAttackFromLevel + self.stabilityModifierAttacks + self.legitimacyModifierAttacks
-        self.currentDefense = self.defense + self.bonusDefenseFromLevel + self.stabilityModifierDefense + self.legitimacyModifierDefense
+        self.currentAttack = self.attack + self.bonusAttackFromLevel + self.stabilityModifierAttacks + self.legitimacyModifierAttacks + self.corruptionModifierAttacks
+        self.currentDefense = self.defense + self.bonusDefenseFromLevel + self.stabilityModifierDefense + self.legitimacyModifierDefense + self.corruptionModifierDefense
 
     def saveParametrsArmy(self) -> dict:
         pass
